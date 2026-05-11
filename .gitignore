@@ -8,3 +8,13 @@
 x64/
 Debug/
 Release/
+
+# Visual Studio project and build files
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+# Build Folders
+[Bb]in/
+[Oo]bj/
