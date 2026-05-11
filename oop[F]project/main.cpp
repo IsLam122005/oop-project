@@ -1,18 +1,19 @@
-#include <iostream>
+﻿#include <iostream>
 #include <string>
 #include "SystemManager.h"
 #include "User.h"
 #include "Order.h"
 #include "Resource.h"
+#include "Multi-threading.h" 
 
 using namespace std;
 
 int main() {
     SystemManager sys;
 
-    // Optional: Add dummy data only for testing if you want
-    // sys.addResource(new LabHardware(101, "Arduino", 450.0, 10, 12));
-    // sys.addResource(new CafeteriaPerishables(202, "Sandwich", 65.0, 20, "Tomorrow"));
+   
+    
+    // ==========================================
 
     cout << "=======================================" << endl;
     cout << "   Welcome to Smart Campus Ecosystem   " << endl;
@@ -31,13 +32,24 @@ int main() {
     bool isDelivery = (deliveryType == 1);
 
     // Create the Order based on user choices
+   // ...  اختيار نوع اليوزر والدليفري ...
+
     Order currentOrder(isStaff, isDelivery);
+
+    // ---Multi-threading---
+    atomic<bool> keepRunning(true);
+    thread monitorThread(runStockMonitor, ref(sys), ref(keepRunning));
+    monitorThread.detach(); 
+    // ---------------------------
 
     int choice = 0;
     while (choice != 5) {
-        cout << "\n--- Main Menu ---" << endl;
-        cout << "1. View Inventory" << endl;
-        cout << "2. Add Item to Cart" << endl;
+        //  إظهار المخزن المحدث في كل لفة
+        sys.displayInventory();
+
+        cout << "--- Main Menu ---" << endl;
+        cout << "1. Refresh Inventory View" << endl;
+        cout << "2. Add Item to Cart (Select by ID)" << endl;
         cout << "3. Compare Two Items (Cost Logic Test)" << endl;
         cout << "4. Checkout & Pay" << endl;
         cout << "5. Exit System" << endl;
@@ -46,12 +58,12 @@ int main() {
 
         switch (choice) {
         case 1:
-            sys.displayInventory();
+            cout << "Inventory Refreshed." << endl;
             break;
 
         case 2: {
             int id, qty;
-            cout << "Enter Resource ID: ";
+            cout << "Looking at the list above, enter Resource ID: ";
             cin >> id;
             Resource* item = sys.findResource(id);
 
@@ -61,7 +73,7 @@ int main() {
                 currentOrder.addItem(item, qty); // This checks stock automatically
             }
             else {
-                cout << "Error: Item not found!" << endl;
+                cout << "Error: ID [" << id << "] not found!" << endl;
             }
             break;
         }
@@ -77,7 +89,6 @@ int main() {
             Resource* r2 = sys.findResource(id2);
 
             if (r1 && r2) {
-                // Testing Operator Overloading >
                 if (*r1 > *r2) {
                     cout << "\nResult: " << r1->getName() << " is more expensive than " << r2->getName() << endl;
                 }
@@ -103,17 +114,18 @@ int main() {
                 string cardNum;
                 cout << "Enter 16-Digit Card Number: ";
                 cin >> cardNum;
-                currentOrder.processPayment("Card", cardNum); // Try-Catch happens here
+                currentOrder.processPayment("Card", cardNum);
             }
 
             currentOrder.generateInvoice();
             cout << "\nThank you for your order! Closing cart..." << endl;
-            choice = 5; // Exit the loop after checkout
+            choice = 5;
             break;
         }
 
         case 5:
             cout << "Exiting... Saving data..." << endl;
+            keepRunning = false; 
             break;
 
         default:
@@ -121,5 +133,5 @@ int main() {
         }
     }
 
-    return 0; // Destructor of SystemManager automatically saves data here
+    return 0;
 }
