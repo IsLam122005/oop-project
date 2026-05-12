@@ -103,23 +103,36 @@ int main() {
         }
 
         case 4: {
-            int payChoice;
-            cout << "\n1. Pay with Cash\n2. Pay with Card (16 Digits)\nChoice: ";
-            cin >> payChoice;
+            bool isPaid = false;
 
-            if (payChoice == 1) {
-                currentOrder.processPayment("Cash");
-            }
-            else if (payChoice == 2) {
-                string cardNum;
-                cout << "Enter 16-Digit Card Number: ";
-                cin >> cardNum;
-                currentOrder.processPayment("Card", cardNum);
-            }
+            while (!isPaid) { 
+                int payChoice;
+                cout << "\n1. Pay with Cash\n2. Pay with Card (16 Digits)\n3. Cancel Checkout\nChoice: ";
+                cin >> payChoice;
 
-            currentOrder.generateInvoice();
-            cout << "\nThank you for your order! Closing cart..." << endl;
-            choice = 5;
+                if (payChoice == 1) {
+                    isPaid = currentOrder.processPayment("Cash");
+                }
+                else if (payChoice == 2) {
+                    string cardNum;
+                    cout << "Enter 16-Digit Card Number: ";
+                    cin >> cardNum;
+                    isPaid = currentOrder.processPayment("Card", cardNum);
+                }
+                else if (payChoice == 3) {
+                    cout << "Checkout Cancelled. Returning to Main Menu..." << endl;
+                    break; 
+                }
+
+                if (isPaid) {
+                    currentOrder.generateInvoice();
+                    cout << "\nThank you for your order! Closing cart..." << endl;
+                    choice = 5;
+                }
+                else {
+                    cout << "\n--- Please try entering a valid payment method. ---" << endl;
+                }
+            }
             break;
         }
 

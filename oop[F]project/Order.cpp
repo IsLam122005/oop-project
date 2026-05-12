@@ -1,4 +1,4 @@
-#include "Order.h"
+﻿#include "Order.h"
 #include <iostream>
 #include <stdexcept>
 #include <cctype>
@@ -44,10 +44,10 @@ double Order::calculateTotal() const {
     return total;
 }
 
-void Order::processPayment(string method, string cardNumber) {
+bool Order::processPayment(string method, string cardNumber) {
     if (method == "Cash") {
         cout << "Payment successful via Cash." << endl;
-        return;
+        return true; // الدفع نجح
     }
 
     if (method == "Card") {
@@ -65,13 +65,16 @@ void Order::processPayment(string method, string cardNumber) {
             }
 
             cout << "Payment successful via Card." << endl;
+            return true; // الدفع نجح
 
         }
         catch (const exception& e) {
             cout << "Exception Caught: " << e.what() << endl;
             cout << "Transaction Failed!" << endl;
+            return false; // الدفع فشل
         }
     }
+    return false;
 }
 
 void Order::generateInvoice() const {

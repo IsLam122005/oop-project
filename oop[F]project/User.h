@@ -6,6 +6,7 @@
 using namespace std;
 
 // Base Class: User
+// Design Defense: Made User an Abstract Class with a pure virtual function isStaffMember() to force runtime Polymorphism.
 class User {
 protected:
     string name;

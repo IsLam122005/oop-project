@@ -6,6 +6,7 @@
 #include <vector>
 
 // Order
+// Design Defense: Used Composition (vector of Resource pointers) because an Order strictly owns its items during the checkout process.
 class Order {
 private:
     vector<Resource*> items;
@@ -21,7 +22,7 @@ public:
     void addItem(Resource* res, int quantity);
     double calculateSubtotal() const;
     double calculateTotal() const;
-    void processPayment(string method, string cardNumber = "");
+    bool processPayment(string method, string cardNumber = "");
     void generateInvoice() const;
 };
 
