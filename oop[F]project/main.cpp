@@ -43,7 +43,6 @@ int main() {
     // ---------------------------
 
     int choice = 0;
-    Order currentOrder(isStaff, isDelivery);
 
     bool isOrderCompleted = false;
 
