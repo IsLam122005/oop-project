@@ -24,6 +24,7 @@ public:
     double calculateTotal() const;
     bool processPayment(string method, string cardNumber = "");
     void generateInvoice() const;
+    void cancelOrder(); 
 };
 
 #endif

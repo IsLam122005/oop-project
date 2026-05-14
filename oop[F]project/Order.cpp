@@ -96,4 +96,13 @@ void Order::generateInvoice() const {
 
     cout << "Total to Pay: $" << calculateTotal() << endl;
     cout << "=====================\n" << endl;
+
+   
+
+}
+void Order::cancelOrder() {
+    for (auto item : items) {
+        item->restock(1);
+    }
+    items.clear();
 }

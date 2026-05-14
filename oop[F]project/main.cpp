@@ -43,6 +43,11 @@ int main() {
     // ---------------------------
 
     int choice = 0;
+    Order currentOrder(isStaff, isDelivery);
+
+    bool isOrderCompleted = false;
+
+    // ---Multi-threading---
     while (choice != 5) {
         //  إظهار المخزن المحدث في كل لفة
         sys.displayInventory();
@@ -127,6 +132,7 @@ int main() {
                 if (isPaid) {
                     currentOrder.generateInvoice();
                     cout << "\nThank you for your order! Closing cart..." << endl;
+                    isOrderCompleted = true; 
                     choice = 5;
                 }
                 else {
@@ -137,8 +143,12 @@ int main() {
         }
 
         case 5:
+            if (!isOrderCompleted) {
+                currentOrder.cancelOrder();
+            }
+
             cout << "Exiting... Saving data..." << endl;
-            keepRunning = false; 
+            keepRunning = false;
             break;
 
         default:
