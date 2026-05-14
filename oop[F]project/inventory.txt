@@ -1,5 +1,5 @@
 101 Arduino_Uno 450 13
-102 Raspberry_Pi_4 3500 4
+102 Raspberry_Pi_4 3500 3
 103 Digital_Multimeter 850 10
 201 Tuna_Sandwich 55 30
 202 Mango_Juice 25 50

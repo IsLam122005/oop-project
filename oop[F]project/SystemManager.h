@@ -24,6 +24,7 @@ public:
     // File I/O (Persistence)
     void loadData();
     void saveData() const;
+    vector<Resource*> getInventory() const { return inventory; }
 };
 
 #endif
